@@ -1,0 +1,11 @@
+{
+  "id": "1",
+  "values": [
+    {
+      "type": "any",
+      "value": ["Finalizar Solicitação"],
+      "key": "ordem_solicitacao"
+    }
+  ],
+  "_postman_variable_scope": "globals"
+}
