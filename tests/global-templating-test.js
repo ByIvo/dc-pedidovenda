@@ -5,13 +5,12 @@ var sinon = require('sinon');
 
 var ParamSolver = require('./../src/param-solver.js');
 var GlobalTemplating = require('./../src/global-templating.js');
-var templateSolver = require('./../src/template-solver.js');
-/*
+var TemplateSolver = require('./../src/template-solver.js');
+
 describe('GlobalTemplating', function() {
 
   beforeEach(function() {
-    sinon.stub(templateSolver, 'readTemplate', function(templateName, scope) {
-      console.log("STUBE CACILDS");
+    sinon.stub(TemplateSolver.prototype, 'readTemplate', function(templateName, path) {
       return {
         "id": "1",
         "values": [
@@ -21,26 +20,39 @@ describe('GlobalTemplating', function() {
             "key": "ordem_solicitacao"
           }
         ],
-        "_postman_variable_scope": "globals",
-        "_postman_exported_at": new Date().toISOString()
+        "_postman_variable_scope": "globals"
       };
     });
   });
 
   afterEach(function() {
-    ParamSolver.resolve.restore();
-    templateSolver.readTemplate.restore();
+    TemplateSolver.prototype.readTemplate.restore();
+    ParamSolver.prototype.resolve.restore();
   });
 
   it("Should generate an template only with ordem_solicitacao", function()  {
-      sinon.stub(ParamSolver, 'resolve', function(entries) {
+      sinon.stub(ParamSolver.prototype, 'resolve', function(entries) {
         return {};
       });
+
+      var templateSolver = new TemplateSolver("", "");
 
       var entries = [];
       var params = new ParamSolver().resolve(entries);
 
-      var template = new GlobalTemplating().createNewmanGlobals(params);
+      var generatedTemplate = new GlobalTemplating(templateSolver).createNewmanGlobals(params);
+      var expectedTemplate = {
+        "id": "1",
+        "values": [
+          {
+            "type": "any",
+            "value": ["Finalizar Solicitação"],
+            "key": "ordem_solicitacao"
+          }
+        ],
+        "_postman_variable_scope": "globals"
+      };
+
+      expect(generatedTemplate).to.be.deep.equal(expectedTemplate);
   });
 });
-*/
