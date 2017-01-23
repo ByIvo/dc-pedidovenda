@@ -7,14 +7,20 @@ TemplateSolver.prototype.isValid = function(template) {
 
     if (!template.values) {
         throw new Error('O arquivo de template deve possuir a propriedade \'values\'');
-    } else if (!template.values.find(function(value) {
-      
-    })) {
+    } else {
+      var hasRequiredKey = function(arrValue) {
+        return arrValue.find(function(value, index, array) {
+          return value.key === 'ordem_solicitacao';
+        });
+      };
+
+      if(!hasRequiredKey(template.values)) {
         throw new Error('Seu arquivo de template não possui a propriedade \'ordem_solicitacao\' e por este motivo não pode ser processado.');
+      }
     }
 
     return true;
-}
+};
 
 TemplateSolver.prototype.readTemplate = function() {
     var jsonFile = require('jsonfile');
