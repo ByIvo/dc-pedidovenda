@@ -22,6 +22,6 @@
   },
 
   "bin": {
-    "filesearch": "src/index.js"
+    "dc-pedidovenda": "src/index.js"
   }
 }
