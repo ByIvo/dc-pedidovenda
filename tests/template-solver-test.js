@@ -11,7 +11,6 @@ describe("TemplateSolver", function() {
         var template = templateSolver.readTemplate();
 
         expect(template).to.be.deep.equal({
-            "id": "1",
             "values": [{
                 "type": "any",
                 "value": ["Finalizar Solicitação"],
@@ -31,22 +30,22 @@ describe("TemplateSolver", function() {
       var templateSolver = new TemplateSolver('template-test.json', __dirname);
       var template = templateSolver.readTemplate();
 
-      expect(templateSolver.isValid(template)).to.be.true;
+      expect(templateSolver.validate(template)).to.be.true;
     });
 
-    it('Shoul throw invalid template because has no values property ', function() {
+    it('Should throw invalid template because has no values property ', function() {
         var template = {};
         var templateSolver = new TemplateSolver('', '');
 
-        expect(templateSolver.isValid.bind(templateSolver, template)).to.throw(Error, 'O arquivo de template deve possuir a propriedade \'values\'');
+        expect(templateSolver.validate.bind(templateSolver, template)).to.throw(Error, 'O arquivo de template deve possuir a propriedade \'values\'');
     });
 
-    it('Shoul throw invalid template because has no ordem_solicitacao', function() {
+    it('Should throw invalid template because has no ordem_solicitacao', function() {
         var template = {
           values: []
         };
         var templateSolver = new TemplateSolver('', '');
 
-        expect(templateSolver.isValid.bind(templateSolver, template)).to.throw(Error, 'Seu arquivo de template não possui a propriedade \'ordem_solicitacao\' e por este motivo não pode ser processado.');
+        expect(templateSolver.validate.bind(templateSolver, template)).to.throw(Error, 'Seu arquivo de template não possui a propriedade \'ordem_solicitacao\' e por este motivo não pode ser processado.');
     });
 });

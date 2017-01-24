@@ -3,7 +3,7 @@ function TemplateSolver(templateName, path) {
     this._path = path;
 }
 
-TemplateSolver.prototype.isValid = function(template) {
+TemplateSolver.prototype.validate = function(template) {
 
     if (!template.values) {
         throw new Error('O arquivo de template deve possuir a propriedade \'values\'');

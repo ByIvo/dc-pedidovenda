@@ -9,50 +9,107 @@ var TemplateSolver = require('./../src/template-solver.js');
 
 describe('GlobalTemplating', function() {
 
-  beforeEach(function() {
-    sinon.stub(TemplateSolver.prototype, 'readTemplate', function(templateName, path) {
-      return {
-        "id": "1",
-        "values": [
-          {
-            "type": "any",
-            "value": ["Finalizar Solicitação"],
-            "key": "ordem_solicitacao"
-          }
-        ],
-        "_postman_variable_scope": "globals"
-      };
+    beforeEach(function() {
+        sinon.stub(TemplateSolver.prototype, 'readTemplate', function(templateName, path) {
+            return {
+                "values": [{
+                    "type": "any",
+                    "value": ["Finalizar Solicitação"],
+                    "key": "ordem_solicitacao"
+                }],
+                "_postman_variable_scope": "globals"
+            };
+        });
     });
-  });
 
-  afterEach(function() {
-    TemplateSolver.prototype.readTemplate.restore();
-    ParamSolver.prototype.resolve.restore();
-  });
+    afterEach(function() {
+        TemplateSolver.prototype.readTemplate.restore();
+        ParamSolver.prototype.resolve.restore();
+    });
 
-  it("Should generate an template only with ordem_solicitacao", function()  {
+    it("Should generate an template only with ordem_solicitacao", function() {
+        sinon.stub(ParamSolver.prototype, 'resolve', function(entries) {
+            return {};
+        });
+
+        var templateSolver = new TemplateSolver("", "");
+
+        var entries = [];
+        var params = new ParamSolver().resolve(entries);
+
+        var generatedTemplate = new GlobalTemplating(templateSolver).createNewmanGlobals(params);
+        var expectedTemplate = {
+            "values": [{
+                "type": "any",
+                "value": ["Finalizar Solicitação"],
+                "key": "ordem_solicitacao"
+            }],
+            "_postman_variable_scope": "globals"
+        };
+
+        expect(generatedTemplate).to.be.deep.equal(expectedTemplate);
+    });
+
+    it('Shoud clear a value template', function() {
       sinon.stub(ParamSolver.prototype, 'resolve', function(entries) {
         return {};
       });
 
-      var templateSolver = new TemplateSolver("", "");
+      var globalTemplating = new GlobalTemplating(null);
 
-      var entries = [];
-      var params = new ParamSolver().resolve(entries);
-
-      var generatedTemplate = new GlobalTemplating(templateSolver).createNewmanGlobals(params);
-      var expectedTemplate = {
-        "id": "1",
-        "values": [
-          {
-            "type": "any",
-            "value": ["Finalizar Solicitação"],
-            "key": "ordem_solicitacao"
-          }
-        ],
-        "_postman_variable_scope": "globals"
+      var validValueTemplate = {
+        'type': 'any',
+        'value': 'dirty',
+        'key': 'dirty'
       };
 
-      expect(generatedTemplate).to.be.deep.equal(expectedTemplate);
-  });
+      var cleanValueTemplate = globalTemplating.cleanValueTemplate(validValueTemplate);
+
+      expect(cleanValueTemplate).to.be.deep.equal({
+        'type': 'any',
+        'value': '',
+        'key': ''
+      });
+    });
+
+    it("Should generate a global variable template file", function() {
+        sinon.stub(ParamSolver.prototype, 'resolve', function(entries) {
+            return {
+                string: 'okay',
+                numeric: 1.0,
+                logical: true
+            };
+        })
+
+        var templateSolver = new TemplateSolver('fake_file', 'fake_path');
+        var globalTemplating = new GlobalTemplating(templateSolver);
+
+        var keys = new ParamSolver().resolve([]);
+
+        var newmanGlobals = globalTemplating.createNewmanGlobals(keys);
+
+        expect(newmanGlobals).to.be.deep.equal({
+            "values": [{
+                    "type": "any",
+                    "value": ["Finalizar Solicitação"],
+                    "key": "ordem_solicitacao"
+                }, {
+                  "type": "any",
+                  "value": 'okay',
+                  "key": 'string'
+                },
+                {
+                  "type": 'any',
+                  "value": 1.0,
+                  "key": 'numeric'
+                },
+                {
+                  "type": 'any',
+                  "value": true,
+                  "key": 'logical'
+                }
+            ],
+            "_postman_variable_scope": "globals"
+        });
+    });
 });
