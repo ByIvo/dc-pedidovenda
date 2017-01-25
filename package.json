@@ -18,9 +18,9 @@
     "sinon": "^1.17.7"
   },
   "dependencies": {
-    "commander": "^2.9.0"
+    "commander": "^2.9.0",
+    "winston": "^2.3.1"
   },
-
   "bin": {
     "dc-pedidovenda": "src/index.js"
   }
