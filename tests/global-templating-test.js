@@ -37,7 +37,7 @@ describe('GlobalTemplating', function() {
         var entries = [];
         var params = new ParamSolver().resolve(entries);
 
-        var generatedTemplate = new GlobalTemplating(templateSolver).createNewmanGlobals(params);
+        var generatedTemplate = new GlobalTemplating(templateSolver, params).createNewmanGlobals();
         var expectedTemplate = {
             "values": [{
                 "type": "any",
@@ -82,11 +82,11 @@ describe('GlobalTemplating', function() {
         })
 
         var templateSolver = new TemplateSolver('fake_file', 'fake_path');
-        var globalTemplating = new GlobalTemplating(templateSolver);
-
         var keys = new ParamSolver().resolve([]);
+        var globalTemplating = new GlobalTemplating(templateSolver, keys);
 
-        var newmanGlobals = globalTemplating.createNewmanGlobals(keys);
+
+        var newmanGlobals = globalTemplating.createNewmanGlobals();
 
         expect(newmanGlobals).to.be.deep.equal({
             "values": [{
