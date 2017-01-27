@@ -16,7 +16,8 @@
     "jsonfile": "^2.4.0",
     "mocha": "^3.2.0",
     "mocha-multi": "^0.10.0",
-    "sinon": "^1.17.7"
+    "sinon": "^1.17.7",
+    "tmp": "0.0.31"
   },
   "dependencies": {
     "commander": "^2.9.0",
