@@ -37,7 +37,7 @@ describe("TempGlobalCreator", function() {
 
     beforeEach(function() {
         sinon.stub(GlobalTemplating.prototype, 'createNewmanGlobals', function() {
-            console.log('oi');
+            
             return expectedGlobal;
         });
     });
