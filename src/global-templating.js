@@ -1,5 +1,6 @@
-function GlobalTemplating(templateSolver) {
+function GlobalTemplating(templateSolver, params) {
   this._templateSolver = templateSolver;
+  this._params = params;
 }
 
 GlobalTemplating.prototype.cleanValueTemplate = function(validValueTemplate) {
@@ -11,8 +12,9 @@ GlobalTemplating.prototype.cleanValueTemplate = function(validValueTemplate) {
   return cleanValueTemplate;
 };
 
-GlobalTemplating.prototype.createNewmanGlobals = function(params) {
+GlobalTemplating.prototype.createNewmanGlobals = function() {
   var templateFile = this._templateSolver.readTemplate();
+  var params = this._params;
   this._templateSolver.validate(templateFile);
 
   var arrValues = templateFile.values;
