@@ -29,6 +29,6 @@ GlobalTemplating.prototype.createNewmanGlobals = function(params) {
   }
 
   return templateFile;
-}
+};
 
 module.exports = GlobalTemplating;
