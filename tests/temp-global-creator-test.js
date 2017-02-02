@@ -10,7 +10,7 @@ var GlobalTemplating = require('./../src/global-templating.js');
 
 describe("TempGlobalCreator", function() {
     var expectedGlobal = {};
-    var workingDirectory = __dirname + "/resources";
+    var tempGlobalCreator;
 
     before(function() {
       expectedGlobal = {
@@ -36,24 +36,20 @@ describe("TempGlobalCreator", function() {
     });
 
     beforeEach(function() {
+        tempGlobalCreator = new TempGlobalCreator();
         sinon.stub(GlobalTemplating.prototype, 'createNewmanGlobals', function() {
-            
             return expectedGlobal;
         });
     });
 
     afterEach(function() {
         GlobalTemplating.prototype.createNewmanGlobals.restore();
+        tempGlobalCreator.removeTempFile();
     });
-
+    
     it("Should create a tempfile just like in parameter", function() {
-        var globalTemplating = new GlobalTemplating({}, []);
-        console.log(globalTemplating);
-        var tempGlobalCreator = new TempGlobalCreator(workingDirectory);
-
-        tempGlobalCreator.createTempGlobals(globalTemplating);
-
-        expect(file(workingDirectory + "/tmp/globals.tmp.json")).to.exist;
+        expect(file(tempGlobalCreator.filename())).to.exist;
     });
+
 
 });

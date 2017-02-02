@@ -1,7 +1,7 @@
 var newman = require('newman');
 
 module.exports = {
-  asd: function(env, collection, globals) {
+  run: function(env, collection, globals) {
     newman.run({});
   }
 };
